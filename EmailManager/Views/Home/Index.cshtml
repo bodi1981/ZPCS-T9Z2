@@ -1,0 +1,97 @@
+﻿@model IEnumerable<EmailManager.Models.Domains.Email>
+
+@{
+    ViewBag.Title = "Email Manager";
+}
+
+<h1 class="mb-4">Wiadomości</h1>
+
+<button class="btn btn-primary btn-sm mb-1" onclick='window.location="@Url.Action("Sent", "Home")"'>Utwórz wiadomość</button>
+
+@if (Model != null && Model.Any())
+{
+    <table class="table table-light table-hover table-striped mt-3 mb-5">
+        <thead>
+            <tr>
+                <th scope="col">Nadawca</th>
+                <th scope="col">Temat</th>
+                <th></th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var email in Model)
+            {
+                <tr>
+                    <td class="clicked-data col-3" data-href="@Url.Action("Sent", "Home", new { emailId = email.Id })">@email.Reciepient</td>
+                    <td class="clicked-data col-5" data-href="@Url.Action("Sent", "Home", new { emailId = email.Id })">@email.Subject</td>
+                    <td>
+                        <button class="btn btn-danger btn-sm" onclick="deleteInvoice('@email.Id', this)">Usuń</button>
+                    </td>
+                    <td>
+                        <button class="btn btn-info btn-sm" onclick='window.location="@Url.Action("Sent", "Home", new { emailId = email.Id })"'>Szczegóły</button>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+}
+else
+{
+    <div class="mt-4">Brak wiadomości do wyświetlenia</div>
+}
+
+
+@section Scripts
+{
+    <script type="text/javascript">
+        function deleteInvoice(emailId, btn)
+        {
+            if (!confirm("Czy na pewno chcesz usnąć ten email?")) {
+                return;
+            }
+
+            $.ajax({
+                type: 'POST',
+                url: "@Url.Action("RemoveEmail", "Home")",
+                data: {
+                    emailId: emailId
+                },
+                success: function (data) {
+                    if (data.Success) {
+                        var row = btn.parentNode.parentNode;
+                        row.parentNode.removeChild(row);
+                    } else {
+                        alert(data.Message);
+                    }
+                },
+                error: function (data) {
+                    alert(data.Message);
+                },
+                dataType: 'json'
+            });
+        }
+
+
+        $(".clicked-data").click(function () {
+            window.location = $(this).data("href");
+        });
+
+    </script>
+
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
