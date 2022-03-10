@@ -2,7 +2,6 @@
 
 @{
     ViewBag.Title = "Sent";
-    var htmlAtrribute = new { @class = "form-control", @readonly = "readonly" };
 }
 
 <h2 class="mb-2">@Model.Header</h2>
@@ -21,63 +20,31 @@
                 </p>
             }
 
-            if (Model.Email.Id != 0)
-            {
-                htmlAtrribute = new { @class = "form-control", @readonly = "readonly" };
-            }
-
             @Html.HiddenFor(m => m.Email.UserId)
             @Html.HiddenFor(m => m.Email.UserId);
 
             <form>
                 <div class="mb-2">
                     @Html.LabelFor(m => m.Email.Sender)
-                    @if (Model.Email.Id == 0)
-                    {
-                        @Html.TextBoxFor(m => m.Email.Sender, new { @class = "form-control", autofocus = "autofocus" })
-                    }
-                    else
-                    {
-                        @Html.TextBoxFor(m => m.Email.Sender, new { @class = "form-control", @readonly = "readonly" })
-                    }
+                    @Html.TextBoxFor(m => m.Email.Sender, new { @class = "form-control", autofocus = "autofocus" })
                     @Html.ValidationMessageFor(m => m.Email.Sender)
                 </div>
 
                 <div class="mb-2">
                     @Html.LabelFor(m => m.Email.Reciepient)
-                    @if (Model.Email.Id == 0)
-                    {
-                        @Html.TextBoxFor(m => m.Email.Reciepient, new { @class = "form-control" })
-                    }
-                    else
-                    {
-                        @Html.TextBoxFor(m => m.Email.Reciepient, new { @class = "form-control", @readonly = "readonly" })
-                    }
+                    @Html.TextBoxFor(m => m.Email.Reciepient, new { @class = "form-control" })
                     @Html.ValidationMessageFor(m => m.Email.Reciepient)
                 </div>
 
                 <div class="mb-2">
                     @Html.LabelFor(m => m.Email.Subject)
-                    @if (Model.Email.Id == 0)
-                    {
-                        @Html.TextBoxFor(m => m.Email.Subject, new { @class = "form-control" })
-                    }
-                    else
-                    {
-                        @Html.TextBoxFor(m => m.Email.Subject, new { @class = "form-control", @readonly = "readonly" })
-                    }
+                    @Html.TextBoxFor(m => m.Email.Subject, new { @class = "form-control" })
                 </div>
 
                 <div class="mb-2">
                     @Html.LabelFor(m => m.Email.Message)
-                    @if (Model.Email.Id == 0)
-                    {
-                        @Html.TextAreaFor(m => m.Email.Message, new { @class = "form-control", @rows = "5" })
-                    }
-                    else
-                    {
-                        @Html.TextAreaFor(m => m.Email.Message, new { @class = "form-control", @readonly = "readonly", @rows = "5" })
-                    }
+                    @Html.TextAreaFor(m => m.Email.Message, new { @class = "form-control", @rows = "5" })
+                    
                 </div>
 
                 @if (Model.Email.Id == 0)
@@ -90,3 +57,18 @@
         }
     </div>
 </div>
+
+
+@section Scripts
+{
+    <script type="text/javascript">
+
+        $(document).ready(function () {
+            if ("@Model.Email.Id" != 0) {
+                $(".form-control").prop('readonly', true);
+            }
+        });
+
+    </script>
+
+}

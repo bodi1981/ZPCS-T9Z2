@@ -22,11 +22,11 @@
         <tbody>
             @foreach (var email in Model)
             {
-                <tr>
-                    <td class="clicked-data col-3" data-href="@Url.Action("Sent", "Home", new { emailId = email.Id })">@email.Reciepient</td>
-                    <td class="clicked-data col-5" data-href="@Url.Action("Sent", "Home", new { emailId = email.Id })">@email.Subject</td>
-                    <td>
-                        <button class="btn btn-danger btn-sm" onclick="deleteInvoice('@email.Id', this)">Usuń</button>
+                <tr id="row" onclick="rowClick(event)" data-href="@Url.Action("Sent", "Home", new { emailId = email.Id })">
+                    <td>@email.Reciepient</td>
+                    <td>@email.Subject</td>
+                    <td class="nonclickable">
+                        <button class="btn btn-danger btn-sm nonclickable" onclick="deleteInvoice('@email.Id', this)">Usuń</button>
                     </td>
                     <td>
                         <button class="btn btn-info btn-sm" onclick='window.location="@Url.Action("Sent", "Home", new { emailId = email.Id })"'>Szczegóły</button>
@@ -73,10 +73,11 @@ else
             });
         }
 
-
-        $(".clicked-data").click(function () {
-            window.location = $(this).data("href");
-        });
+        function rowClick(event) {
+            if ($(event.target).hasClass("nonclickable"))
+                return;
+            window.location = $("#row").data("href");
+        }
 
     </script>
 
